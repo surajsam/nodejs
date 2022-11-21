@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html>
     <head title="debounce">
-    <script src="./debounce.js"></script>
+    <script src="./throttle.js"></script>
     </head>
     <body>
-        <input type="text" onkeyup="processChange()" />
+        <input type="text" onkeyup="throttled(1, 2)" />
+        <input type="submit" onclick="throttled.cancel()" />
     </body>
 </html>
