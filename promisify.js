@@ -1,17 +1,34 @@
-const adder = (a, b) => {
-    return a + b;
+function promisify (callback) {
+    return function (...args) {
+        return new Promise( (resolve, reject) => {
+            const handleErrorAndValue = (error, value) =>  {
+                if(error == null) {
+                     resolve(value);
+                }else {
+                     reject(error);
+                }
+            };
+            callback.apply(this, [...args, handleErrorAndValue]);
+        })  
+    } 
+};
+
+
+function adder(x, y, z, t, handleErrorAndValue) {
+    const value = x + y + z+ t;
+    console.log(" what is my this", this);
+    if( typeof value !== 'number') {
+        const error = new Error('Not a number'); 
+        handleErrorAndValue(error, null);
+    } else {
+        handleErrorAndValue(null, value);
+    }
 }
 
-const sub = (a, b) => {
-    return a - b;
-}
+const promisifyAdder =  promisify(adder);
 
-const promisify = (callback) => {
-    return (...args) => new Promise((resolve, reject) => {
-        resolve(callback(...args));
-        reject(callback(...args));
-    });
-}
-
-const promiseAdder = promisify(adder);
-promiseAdder(4, 5).then((value) => console.log(value)).catch((err) => console.log(err));
+// promisifyAdder(1, 2, 7 , 8).then(console.log).catch(console.error);
+// promisifyAdder(1, "foobar",7 , 8).then(console.log).catch(console.error);
+const obj = {a: 5};
+obj.promisifyAdder = promisify(adder);
+obj.promisifyAdder(1, 2, 7 , 8)
