@@ -22,9 +22,6 @@ const someFun2 = function (a, b) {
 
 const obj = {a: 5};
 
-
-// someFun2.call(obj, 1, 2);
-// someFun2.apply(obj, [6, 7]);
 console.log(someFun2.myCall(obj, 7, 3));
 console.log(someFun2.myApply(obj, [2, 3]));
 const bindFunc = someFun2.myBind(obj, 3, 3);
